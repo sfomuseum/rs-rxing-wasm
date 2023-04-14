@@ -1,0 +1,56 @@
+<html>
+    <head>
+	<title>barcode</title>
+    </head>
+    <body>
+	<form>
+	    <input type="file" id="barcode" disabled="disabled" />
+	    <button type="submit" id="submit" disabled="disabled">Scan</button>
+	</form>
+    </body>
+    <script type="module">
+
+        import init, { convert_js_image_to_luma, decode_barcode } from './rxing_wasm.js';
+
+        async function main() {
+            await init();
+
+	    var barcode_el = document.getElementById("barcode");	    
+	    var submit_el = document.getElementById("submit");
+
+	    barcode_el.removeAttribute("disabled");	    
+	    submit_el.removeAttribute("disabled");
+
+	    submit_el.onclick = function(e){
+
+		var file = barcode_el.files[0];         
+		var url = URL.createObjectURL(file);    
+		var img = new Image();                  
+    
+		img.onload = function() {
+		    
+		    URL.revokeObjectURL(this.src);      
+
+		    var w = this.width;
+		    var h = this.height;
+		    
+		    var canvas = document.createElement("canvas");
+		    let context = canvas.getContext("2d");
+		    context.drawImage(this, 0, 0);
+
+		    var data = context.getImageData(0, 0, w, h);
+		    let luma8Data = convert_js_image_to_luma(data);
+		    let parsedBarcode = decode_barcode(luma8Data, w, h, true);
+		};
+		
+		img.src = url;
+
+		document.body.appendChild(img);
+		return false;
+	    };
+	    
+        }
+
+        main();
+    </script>
+</html>
