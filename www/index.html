@@ -31,16 +31,23 @@
 		    
 		    URL.revokeObjectURL(this.src);      
 
-		    var w = this.width;
-		    var h = this.height;
+		    let w = this.width;
+		    let h = this.height;
 		    
-		    var canvas = document.createElement("canvas");
+		    let canvas = document.createElement("canvas");
 		    let context = canvas.getContext("2d");
 		    context.drawImage(this, 0, 0);
 
-		    var data = context.getImageData(0, 0, w, h);
+		    let data = context.getImageData(0, 0, w, h).data;
 		    let luma8Data = convert_js_image_to_luma(data);
 		    let parsedBarcode = decode_barcode(luma8Data, w, h, true);
+
+		    console.log(parsedBarcode.text());
+
+		    var div = document.createElement("div");
+		    div.innerText = parsedBarcode.text();
+
+		    document.body.appendChild(div);
 		};
 		
 		img.src = url;

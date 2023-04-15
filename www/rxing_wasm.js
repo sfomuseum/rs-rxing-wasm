@@ -177,15 +177,10 @@ function isLikeNone(x) {
 */
 export function decode_barcode(data, width, height, try_harder) {
     try {
-	console.log("A");
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-	console.log("B");	
         const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
-	console.log("C");	
         const len0 = WASM_VECTOR_LEN;
-	console.log("D");	
         wasm.decode_barcode(retptr, ptr0, len0, width, height, isLikeNone(try_harder) ? 0xFFFFFF : try_harder ? 1 : 0);
-	console.log("E");	
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         var r2 = getInt32Memory0()[retptr / 4 + 2];
