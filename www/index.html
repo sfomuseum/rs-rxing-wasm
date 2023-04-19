@@ -10,22 +10,8 @@
     </body>
     <script type="module">
 
-     import init, { convert_js_image_to_luma, decode_barcode_with_hints, DecodeHintDictionary } from './rxing_wasm.js';
+     import init, { convert_js_image_to_luma, decode_barcode_with_hints, DecodeHintDictionary, DecodeHintTypes } from './rxing_wasm.js';
 
-     function callsign(raw) {
-	 // M1SOLLE/JOSUHUA EQHSLJX ATLMEMDL 0254 006Y28C 10C3JIJI7O4M28C
-
-	 console.log(raw);
-	 let parts = raw.split(/\s+/);
-	 console.log(parts);
-	 
-	 let airfield = parts[2];
-	 let airline = airfield.substr(airfield.length-2);
-	 let flightnum = parseInt(parts[3]);
-
-	 return [airline, flightnum];
-     };
-     
      async function main() {
             await init();
 
@@ -56,11 +42,14 @@
 		    let luma8Data = convert_js_image_to_luma(data);
 
 		    let hints = new DecodeHintDictionary();
+		    hints.set_hint(DecodeHintTypes["PossibleFormats"], "qrcode,datamatrix,aztec,pdf417");
+		    hints.set_hint(DecodeHintTypes["TryHarder"], "true");
+		    
 		    let parsedBarcode = decode_barcode_with_hints(luma8Data, w, h, hints);
 
 		    let bcbp = parsedBarcode.text();
 		    
-		    console.log(callsign(bcbp));
+		    console.log(bcbp);
 
 		    var div = document.createElement("div");
 		    div.innerText = bcbp;
