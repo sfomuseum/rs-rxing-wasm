@@ -10,7 +10,7 @@
     </body>
     <script type="module">
 
-     import init, { convert_js_image_to_luma, decode_barcode_with_hints, DecodeHintDictionary, DecodeHintTypes } from './rxing_wasm.js';
+     import init, { convert_js_image_to_luma, decode_barcode } from './rxing_wasm.js';
 
      async function main() {
             await init();
@@ -36,16 +36,17 @@
 		    
 		    let canvas = document.createElement("canvas");
 		    let context = canvas.getContext("2d");
-		    context.drawImage(this, 0, 0);
 
-		    let data = context.getImageData(0, 0, w, h).data;
-		    let luma8Data = convert_js_image_to_luma(data);
-
-		    let hints = new DecodeHintDictionary();
-		    hints.set_hint(DecodeHintTypes["PossibleFormats"], "qrcode,datamatrix,aztec,pdf417");
-		    hints.set_hint(DecodeHintTypes["TryHarder"], "true");
+		    // This is important for 2D barcoded
+		    // https://github.com/rxing-core/rxing-wasm/issues/6
+		    canvas.width = w;
+		    canvas.height = h;
 		    
-		    let parsedBarcode = decode_barcode_with_hints(luma8Data, w, h, hints);
+		    context.drawImage(img, 0, 0);
+		    
+		    let data = context.getImageData(0, 0, w, h).data;
+		    let luma8Data = convert_js_image_to_luma(data);		    
+		    let parsedBarcode = decode_barcode(luma8Data, w, h, true);
 
 		    let bcbp = parsedBarcode.text();
 		    
