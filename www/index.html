@@ -43,14 +43,19 @@
 		    canvas.height = h;
 		    
 		    context.drawImage(img, 0, 0);
-		    
+
+		    console.log("OMG");
 		    let data = context.getImageData(0, 0, w, h).data;
-		    let luma8Data = convert_js_image_to_luma(data);		    
+		    let luma8Data = convert_js_image_to_luma(data);
+
+		    console.log("WTF");		    
 		    let parsedBarcode = decode_barcode(luma8Data, w, h, true);
 
+		    console.log("BBQ", parsedBarcode);
+		    
 		    let bcbp = parsedBarcode.text();
 		    
-		    console.log(bcbp);
+		    console.log("TEXT", bcbp);
 
 		    var div = document.createElement("div");
 		    div.innerText = bcbp;

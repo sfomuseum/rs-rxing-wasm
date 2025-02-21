@@ -1,7 +1,8 @@
 {
   "name": "rxing-wasm",
+  "type": "module",
   "description": "wasm bindings for rxing to provide commong barcode operations (decode/encode)",
-  "version": "0.1.19",
+  "version": "0.4.0",
   "license": "Apache 2.0",
   "repository": {
     "type": "git",
@@ -12,9 +13,17 @@
     "rxing_wasm.js",
     "rxing_wasm.d.ts"
   ],
-  "module": "rxing_wasm.js",
+  "main": "rxing_wasm.js",
   "types": "rxing_wasm.d.ts",
   "sideEffects": [
     "./snippets/*"
+  ],
+  "keywords": [
+    "barcode",
+    "2d_barcode",
+    "1d_barcode",
+    "barcode_reader",
+    "barcode_writer",
+    "rxing"
   ]
 }
