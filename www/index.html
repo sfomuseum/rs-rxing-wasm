@@ -57,7 +57,8 @@
 		    
 		    console.log("TEXT", bcbp);
 
-		    var div = document.createElement("div");
+		    var div = document.createElement("pre");
+		    div.setAttribute("style", "border:solid thin; padding: .5rem;");
 		    div.innerText = bcbp;
 
 		    document.body.appendChild(div);
